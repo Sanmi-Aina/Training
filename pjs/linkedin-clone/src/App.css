@@ -10,4 +10,8 @@
   display: flex;
   width: 100%;
   flex: 1;
+  margin-top: 35px;
+  max-width: 1200px;
+  margin-left: 20px;
+  margin-right: 20px;
 }

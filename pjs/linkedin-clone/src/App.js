@@ -40,6 +40,7 @@ function App() {
         <section className="app__body">
           <Sidebar />
           <Feed />
+          {/* <Widgets /> */}
         </section>
       )}
     </div>

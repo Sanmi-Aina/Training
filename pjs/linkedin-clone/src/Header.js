@@ -14,6 +14,7 @@ import { auth } from "./firebase";
 
 const Header = () => {
   const user = useSelector(selectUser);
+  const [currentUser, setCurrentUser] = useState();
 
   const dispatch = useDispatch();
   const logoutOfApp = (e) => {
@@ -22,8 +23,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    let currentUser = auth.currentUser;
-    console.log(currentUser.displayName, user.user);
+    // let currentUser = auth.currentUser;
+    setCurrentUser(auth.currentUser);
+    console.log(currentUser, user);
   }, []);
 
   return (
@@ -45,8 +47,8 @@ const Header = () => {
         <HeaderOption Icon={Chat} title="Messaging" />
         <HeaderOption Icon={NotificationsIcon} title="Notifications" />
         <HeaderOption
-          avatar={user.user.photoURL}
-          title={user.user.displayName}
+          avatar={"user.user.photoURL"}
+          title={"user.user.displayName"}
           onClick={logoutOfApp}
         />
       </div>

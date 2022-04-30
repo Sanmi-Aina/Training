@@ -1,0 +1,12 @@
+.myCarousel{
+    overflow: hidden;
+}
+.myCarousel__inner{
+    white-space: nowrap;
+    transition: transform 0.3s;
+}
+.myCarousel__Item{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}

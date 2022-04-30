@@ -6,6 +6,7 @@ import {
   Image,
   Subscriptions,
 } from "@mui/icons-material";
+import FlipMove from "react-flip-move";
 import "./Feed.css";
 
 import InputOption from "./InputOption";
@@ -75,15 +76,17 @@ const Feed = () => {
         </div>
       </div>
 
-      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
-        <Post
-          key={id}
-          name={name}
-          description={description}
-          message={message}
-          photoUrl={photoUrl}
-        />
-      ))}
+      <FlipMove>
+        {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
+          <Post
+            key={id}
+            name={name}
+            description={description}
+            message={message}
+            photoUrl={photoUrl}
+          />
+        ))}
+      </FlipMove>
     </div>
   );
 };
