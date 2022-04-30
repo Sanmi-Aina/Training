@@ -2,13 +2,15 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
+import GChart from "./component/GChart";
+
 export class XtraCharts implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private _notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
 	private _refreshData: EventListenerOrEventListenerObject;
 	private _container: HTMLDivElement;
 
-	private _chartType: string;
+	// private _chartType: string;
 
 	constructor() {
 
@@ -27,10 +29,10 @@ export class XtraCharts implements ComponentFramework.StandardControl<IInputs, I
 
 		this._context = context;
 		this._container = container;
-		this._chartType = context.parameters.ChartType.raw;
+		// this._chartType = context.parameters.ChartType.raw;
 		this._notifyOutputChanged = notifyOutputChanged;
 		// this._refreshData = this._refreshData.bind(this);
-		container.innerHTML = `<h3>${this._chartType}</h3>`;
+		// container.innerHTML = `<h3>${this._chartType}</h3>`;
 	}
 
 
@@ -41,9 +43,29 @@ export class XtraCharts implements ComponentFramework.StandardControl<IInputs, I
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		// Add code to update control view
 
-		this._chartType = context.parameters.ChartType.raw;
+		let _chartType = context.parameters.ChartType.raw;
+		let _chartData = this.FormatChartData(context.parameters.ChartData);
 
-		this._container.innerHTML = `<h3>${this._chartType}</h3>`;
+		this._container.innerHTML = `
+			<h3>${_chartType}</h3>
+		`;
+
+		let chart = GChart({
+			ChartType: _chartType,
+			ChartData: _chartData
+		});
+
+		// this._container.append(chart);
+	}
+
+	private FormatChartData = (InputData: ComponentFramework.PropertyTypes.DataSet): any[] => {
+		const columnTitle = InputData.columns.map(col => col.name);
+		let records: any[] = [];
+
+		records = InputData.sortedRecordIds.map(recordId => columnTitle.map(col => InputData.records[recordId].getValue(col)));
+
+		console.log(records)
+		return [columnTitle, ...records];
 	}
 
 	/**
@@ -52,9 +74,10 @@ export class XtraCharts implements ComponentFramework.StandardControl<IInputs, I
 	 */
 	public getOutputs(): IOutputs {
 		return {
-			ChartType: this._chartType
+			// ChartType: this._chartType
 		};
 	}
+
 
 	/**
 	 * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.

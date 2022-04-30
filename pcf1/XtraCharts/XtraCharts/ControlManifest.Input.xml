@@ -11,11 +11,26 @@
       <property-set name="samplePropertySet" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
       -->
     </data-set>
+
+    <property name="ChartTitle" display-name-key="Chart Title" description-key="Title of the Chart" of-type="SingleLine.Text" required="false" usage="bound" />
     <property name="ChartType" display-name-key="Chart Type" of-type="Enum" required="true" usage="bound">
-      <value name="None" display-name-key="Chart0">0</value>
-      <value name="Single" display-name-key="Chart1">1</value>
-      <value name="Multiple" display-name-key="Chart2">2</value>
+      <value name="Bar Chart" display-name-key="Bar Chart">BarChart</value>
+      <value name="Bar" display-name-key="Bar">Bar</value>
+      <value name="Area Chart" display-name-key="Area Chart">AreaChart</value>
+      <value name="Column Chart" display-name-key="Column Chart">ColumnChart</value>
+      <value name="Pie Chart" display-name-key="Pie Chart">PieChart</value>
+      <value name="Combo Chart" display-name-key="Combo hart">ComboChart</value>
+      <value name="Scatter Chart" display-name-key="Scatter Chart">ScatterChart</value>
+      <value name="Scatter" display-name-key="Scatter">Scatter</value> <!-- Needs different data setup -->
+      <value name="SteppedArea Chart" display-name-key="SteppedArea Chart">SteppedAreaChart</value>
+      <value name="Gauge" display-name-key="Gauge">Gauge</value>
+      <value name="Histogram" display-name-key="Histogram">Histogram</value>
+      <value name="Line" display-name-key="Line">Line</value>
+      <value name="Table" display-name-key="Table">Table</value>
     </property>
+    <property name="ChartOptions" display-name-key="Chart Options" description-key="Chart Options" of-type="SingleLine.TextArea" required="false" usage="bound" />
+    <property name="ColorScheme" display-name-key="Color Scheme" description-key="" of-type="SingleLine.TextArea" required="false" usage="bound" />
+
     <resources>
       <code path="index.ts" order="1"/>
       <!-- UNCOMMENT TO ADD MORE RESOURCES
