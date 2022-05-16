@@ -28,11 +28,14 @@
       <value name="Line" display-name-key="Line">Line</value>
       <value name="Table" display-name-key="Table">Table</value>
     </property>
-    <property name="ChartOptions" display-name-key="Chart Options" description-key="Chart Options" of-type="SingleLine.TextArea" required="false" usage="bound" />
-    <property name="ColorScheme" display-name-key="Color Scheme" description-key="" of-type="SingleLine.TextArea" required="false" usage="bound" />
+    <property name="ChartOptions" display-name-key="Chart Options" description-key="Chart Options" of-type="SingleLine.TextArea" required="false" usage="input" />
+    <property name="ColorScheme" display-name-key="Color Scheme" description-key="" of-type="SingleLine.TextArea" required="false" usage="input" />
+
+    <property name="SelectedRecord" display-name-key="Selected Record" description-key="Record selected in the chart" of-type="SingleLine.Text" usage="output" />
 
     <resources>
       <code path="index.ts" order="1"/>
+      <platform-library name="React" version="18.1.0" />
       <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/XtraCharts.css" order="1" />
       <resx path="strings/XtraCharts.1033.resx" version="1.0.0" />

@@ -1,14 +1,19 @@
+import * as React from 'react';
+import { createRoot, Root } from 'react-dom/client';
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
-import GChart from "./component/GChart";
+import { GChart, GChartProps } from "./component/GChart";
 
-export class XtraCharts implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+
+export class XtraCharts implements ComponentFramework.ReactControl<IInputs, IOutputs> {
 	private _notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
 	private _refreshData: EventListenerOrEventListenerObject;
-	private _container: HTMLDivElement;
+	private _content: HTMLDivElement;
+	private containerRoot: Root;
+	// private _containerRef: ref;
 
 	// private _chartType: string;
 
@@ -24,15 +29,23 @@ export class XtraCharts implements ComponentFramework.StandardControl<IInputs, I
 	 * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
 	 * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
 	 */
-	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement): void {
+	public init(
+		context: ComponentFramework.Context<IInputs>,
+		notifyOutputChanged: () => void,
+		state: ComponentFramework.Dictionary,
+		container: HTMLDivElement
+	): void {
 		// Add control initialization code
 
 		this._context = context;
-		this._container = container;
+		this._context.mode.setFullScreen(false);
+		this._context.mode.trackContainerResize(true);
+
+		this.containerRoot = createRoot(container);
 		// this._chartType = context.parameters.ChartType.raw;
 		this._notifyOutputChanged = notifyOutputChanged;
 		// this._refreshData = this._refreshData.bind(this);
-		// container.innerHTML = `<h3>${this._chartType}</h3>`;
+
 	}
 
 
@@ -40,22 +53,22 @@ export class XtraCharts implements ComponentFramework.StandardControl<IInputs, I
 	 * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
 	 * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
 	 */
-	public updateView(context: ComponentFramework.Context<IInputs>): void {
+	public updateView(context: ComponentFramework.Context<IInputs>): any {
 		// Add code to update control view
 
-		let _chartType = context.parameters.ChartType.raw;
-		let _chartData = this.FormatChartData(context.parameters.ChartData);
+		let chartType = context.parameters.ChartType.raw;
+		let chartData = this.FormatChartData(context.parameters.ChartData);
 
-		this._container.innerHTML = `
-			<h3>${_chartType}</h3>
-		`;
+		let chartProps: GChartProps = {
+			dimension: { height: context.mode.allocatedHeight, width: context.mode.allocatedWidth },
+			ChartType: chartType,
+			ChartData: chartData
+		};
 
-		let chart = GChart({
-			ChartType: _chartType,
-			ChartData: _chartData
-		});
+		console.log("oldContext: ", this._context);
+		console.log("newContext: ", context);
 
-		// this._container.append(chart);
+		this.containerRoot.render(React.createElement(GChart, chartProps));
 	}
 
 	private FormatChartData = (InputData: ComponentFramework.PropertyTypes.DataSet): any[] => {

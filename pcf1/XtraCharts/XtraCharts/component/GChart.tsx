@@ -1,17 +1,20 @@
 import * as React from 'react';
 import { Chart, GoogleChartWrapperChartType } from "react-google-charts";
 
-interface GChartProps{
+export interface GChartProps{
+    dimension: {height:number, width:number};
     ChartType: string;
     ChartData: any[];
 }
 
-const GChart: React.FunctionComponent<GChartProps>  = props => {
+export const GChart: React.FunctionComponent<GChartProps>  = props => {
     return (
-        <Chart width="100%" height="100%"
-            chartType={props.ChartType as GoogleChartWrapperChartType}
-            data={props.ChartData}
-        />
+        <div style={{width:`${props.dimension.width}px`, height:`${props.dimension.height}px`}}>
+            <Chart width="100%" height="100%"
+                chartType={props.ChartType as GoogleChartWrapperChartType}
+                data={props.ChartData}
+            />
+        </div>
     )
 };
 
