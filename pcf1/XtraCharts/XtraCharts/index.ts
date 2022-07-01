@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { unmountComponentAtNode } from "react-dom";
 import { createRoot, Root } from 'react-dom/client';
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
@@ -9,10 +10,12 @@ import { GChart, GChartProps } from "./component/GChart";
 
 export class XtraCharts implements ComponentFramework.ReactControl<IInputs, IOutputs> {
 	private _notifyOutputChanged: () => void;
+	private _container: HTMLDivElement;
 	private _context: ComponentFramework.Context<IInputs>;
 	private _refreshData: EventListenerOrEventListenerObject;
 	private _content: HTMLDivElement;
 	private containerRoot: Root;
+	private _SelectedItem: any;
 	// private _containerRef: ref;
 
 	// private _chartType: string;
@@ -41,6 +44,7 @@ export class XtraCharts implements ComponentFramework.ReactControl<IInputs, IOut
 		this._context.mode.setFullScreen(false);
 		this._context.mode.trackContainerResize(true);
 
+		this._container = container;
 		this.containerRoot = createRoot(container);
 		// this._chartType = context.parameters.ChartType.raw;
 		this._notifyOutputChanged = notifyOutputChanged;
@@ -62,24 +66,38 @@ export class XtraCharts implements ComponentFramework.ReactControl<IInputs, IOut
 		let chartProps: GChartProps = {
 			dimension: { height: context.mode.allocatedHeight, width: context.mode.allocatedWidth },
 			ChartType: chartType,
-			ChartData: chartData
+			ChartData: chartData,
+			onSelect: this.ChartItemOnSelect
 		};
-
-		console.log("oldContext: ", this._context);
-		console.log("newContext: ", context);
 
 		this.containerRoot.render(React.createElement(GChart, chartProps));
 	}
 
-	private FormatChartData = (InputData: ComponentFramework.PropertyTypes.DataSet): any[] => {
+	FormatChartData = (InputData: ComponentFramework.PropertyTypes.DataSet): any[] => {
 		const columnTitle = InputData.columns.map(col => col.name);
 		let records: any[] = [];
 
 		records = InputData.sortedRecordIds.map(recordId => columnTitle.map(col => InputData.records[recordId].getValue(col)));
 
-		console.log(records)
 		return [columnTitle, ...records];
 	}
+	ChartItemOnSelect = (item: number) => {
+		this._SelectedItem = item;
+		this._notifyOutputChanged();
+	}
+
+	/* ChartItemOnSelect = (itemId: number) => {
+		console.log(itemId);
+		console.log(this._context.parameters.ChartData);
+		let recordId = this._context.parameters.ChartData.sortedRecordIds[itemId];
+		console.log(recordId);
+		let item = this._context.parameters.ChartData.records[recordId];
+		console.log(item);
+		if (item) {
+			let a = this._context.parameters.ChartData.openDatasetItem(item.getNamedReference());
+			console.log(a);
+		}
+	} */
 
 	/**
 	 * It is called by the framework prior to a control receiving new data.
@@ -87,7 +105,7 @@ export class XtraCharts implements ComponentFramework.ReactControl<IInputs, IOut
 	 */
 	public getOutputs(): IOutputs {
 		return {
-			// ChartType: this._chartType
+			SelectedRecord: JSON.stringify(this._SelectedItem)
 		};
 	}
 
@@ -98,6 +116,7 @@ export class XtraCharts implements ComponentFramework.ReactControl<IInputs, IOut
 	 */
 	public destroy(): void {
 		// Add code to cleanup control if necessary
+		unmountComponentAtNode(this._container);
 	}
 
 }
