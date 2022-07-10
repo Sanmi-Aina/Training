@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="TrimpointControl" constructor="XtraCharts" version="0.0.1" display-name-key="XtraCharts" description-key="Use this PCF to visualize data using Google Charts" control-type="standard" >
+  <control namespace="TrimpointControl" constructor="XtraCharts" version="0.0.2" display-name-key="XtraCharts" description-key="Use this PCF to visualize data using Google Charts" control-type="standard" >
   
     <external-service-usage enabled="false">
     </external-service-usage>

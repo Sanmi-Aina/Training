@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@types/google.visualization": "0.0.68",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-google-charts": "^4.0.0"
   },
   "devDependencies": {

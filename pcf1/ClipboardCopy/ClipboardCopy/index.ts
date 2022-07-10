@@ -1,3 +1,6 @@
+import * as React from 'react';
+// import { unmountComponentAtNode } from "react-dom";
+// import { createRoot, Root } from 'react-dom/client';
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
 
 export class ClipboardCopy implements ComponentFramework.StandardControl<IInputs, IOutputs> {
